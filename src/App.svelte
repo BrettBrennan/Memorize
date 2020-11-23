@@ -1,10 +1,9 @@
 <script>
-	import { writable } from 'svelte/store';
 	import { GAME_STATE } from './stores';
 	import Game from './Components/UI/Game.svelte';
 	import Menu from './Components/UI/Menu.svelte';
-	function changeState(state) {
-		GAME_STATE.set(state);
+	function changeState(e) {
+		GAME_STATE.set(e.detail.state);
 	}
 </script>
 
@@ -17,9 +16,9 @@
 <main>
 	<h1>Memorize</h1>
 	{#if $GAME_STATE === 'MAIN_MENU'}
-		<Menu />
+		<Menu on:changeState={changeState} STATE={$GAME_STATE} />
 	{:else}
-		<Game />
+		<Game on:changeState={changeState} STATE={$GAME_STATE} />
 	{/if}
 
 </main>
