@@ -22,10 +22,10 @@
             <Board {boardSize} />
         {:else}
             <h3>Select a board size to begin.</h3>
-            <button on:click={() => startGame(6)}>7</button>
-            <button on:click={() => startGame(12)}>14</button>
-            <button on:click={() => startGame(18)}>21</button>
-            <button on:click={() => startGame(24)}>28</button>
+            <button on:click={() => startGame(6)}>6</button>
+            <button on:click={() => startGame(12)}>12</button>
+            <button on:click={() => startGame(18)}>18</button>
+            <button on:click={() => startGame(24)}>24</button>
         {/if}
     {:else}
         Game Over?  

@@ -1,5 +1,17 @@
 <script>
-    let flipped = true;
+    import { createEventDispatcher } from 'svelte';
+    const dispatch = createEventDispatcher();
+
+    export let Value;
+    export let ID;
+
+    
+    let flipped = false;
+
+    function select() {
+        flipped = !flipped;
+        dispatch('selectCard', { ID });
+    }
 </script>
 <style>
     .container {
@@ -10,6 +22,9 @@
         perspective: 600px;
     }
     .card {
+        text-align: center;
+        font-size: 3rem;
+        color: #333;
         width: 100%;
         height: 100%;
         position: relative;
@@ -23,11 +38,11 @@
         backface-visibility: hidden;
     }
     .card_face-front {
-        background: red;
+        background: rgb(104, 56, 24);
     }
 
     .card_face-back {
-        background: rgb(104, 56, 24);
+        background: rgb(199, 247, 255);
         transform: rotateY( 180deg );
     }
     .card.is-flipped {
@@ -35,8 +50,8 @@
     }
 </style>
 <div class='container'>
-    <div class='card' class:is-flipped={flipped} on:click={() => flipped = !flipped}>
-        <div class="card_face card_face-front">front</div>
-        <div class="card_face card_face-back">back</div>
+    <div class='card' class:is-flipped={flipped} on:click={() => select()}>
+        <div class="card_face card_face-front">?</div>
+        <div class="card_face card_face-back">{flipped ? Value : ''}</div>
     </div>
 </div>
