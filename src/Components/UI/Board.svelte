@@ -8,6 +8,7 @@
     let used_cards;
     let first;
     let second;
+    let canFlipCards = true;
     
     async function generateCards() {
         currentValue = 0;
@@ -72,6 +73,7 @@
             }
             first = -1;
             second = -1;    
+            canFlipCards = true;
         }, 2000);
     }
     function selectCard(e) {
@@ -89,6 +91,7 @@
             if (second === -1) {
                 second = cID;
                 cards[cID].flipped = true;
+                canFlipCards = false;
                 matchCheck();
                 return;
             }
@@ -109,6 +112,6 @@
 <button on:click={() => generateCards()}>Regen</button>
 <div class='board'> 
     {#each cards as card}
-        <Card Value={card.value} ID={card.id} canFlip={card.flippable} flipped={card.flipped} on:selectCard={selectCard} />
+        <Card Value={card.value} ID={card.id} canFlip={canFlipCards ? card.flippable : false} flipped={card.flipped} on:selectCard={selectCard} />
     {/each}
 </div>
