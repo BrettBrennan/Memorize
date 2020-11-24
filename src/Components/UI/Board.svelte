@@ -1,6 +1,8 @@
 <script>
     export let boardSize;
     import Card from '../Cards/Card.svelte';
+    import { createEventDispatcher } from 'svelte';
+    const dispatch = createEventDispatcher();
 
     let card_values = [ 'X', '#', '@', '$', '%', '&', 'O', '=', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ];
     let currentValue;
@@ -9,8 +11,11 @@
     let first;
     let second;
     let canFlipCards = true;
-    
+    let tries = 3;
+    let score = 0;
     async function generateCards() {
+        score = 0;
+        tries = 3;
         currentValue = 0;
         first = -1;
         second = -1;
@@ -60,20 +65,26 @@
     }
     function matchCheck() {
         if (first === -1 || second === -1) return;
-
         setTimeout(() => {
             if (cards[first].value === cards[second].value){ // They Match!
                 cards[first].flipped = true;
                 cards[first].flippable = false;
                 cards[second].flipped = true;
                 cards[second].flippable = false;
+                score += 50;
             }else{ // They do not match
                 cards[first].flipped = false;
                 cards[second].flipped = false;
+                tries--;
             }
             first = -1;
             second = -1;    
             canFlipCards = true;
+
+
+            if (tries <= 0) {
+                dispatch('gameOver', { won: false, score });
+            }
         }, 2000);
     }
     function selectCard(e) {
