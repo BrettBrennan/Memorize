@@ -5,7 +5,7 @@
     const dispatch = createEventDispatcher();
 
     export let STATE;
-    let boardSize = 5;
+    let boardSize = 6;
     let GAME_PLAYING = false;
     function changeState(state) {
         dispatch('changeState', { state });

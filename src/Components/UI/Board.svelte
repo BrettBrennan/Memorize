@@ -3,32 +3,26 @@
     import Card from '../Cards/Card.svelte';
 
     let card_values = [ 'X', '#', '@', '$', '%', '&', 'O', '=', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ];
-    let pairs = [];
     let currentValue = 0;
 
-    let cards = [];
-    let used_cards = new Array(boardSize - 1).fill(false);
-    console.log(used_cards);
-    for (let i = 0; i < boardSize; i++) {
-
-        if (boardFilled()) break;
-        if (!cardExists(i)){    
-            let first_card = i;
+    let cards = new Array(boardSize).fill({});
+    let used_cards = new Array(boardSize).fill(false);
+    // console.log(used_cards);
+    console.log(`Board Size: ${boardSize}`);
+    console.log(`Cards Length: ${cards.length}`);
+    console.log(`Used Card Length: ${used_cards.length}`);
+    for (let i = 0; i < boardSize / 2; i++) {
+        if (!cardExists(i)){
+            let value =card_values[currentValue]; 
             let second_card = getRandomCard(i);
-            cards = [...cards, {
+            cards[i] = {
                 id: i,
-                value: card_values[currentValue],
-            }];
-            cards = [...cards, {
+                value,                
+            }
+            cards[second_card] = {
                 id: second_card,
-                value: card_values[currentValue],
-            }];
-            pairs = [...pairs, {
-                id: i,
-                first: first_card,
-                second: second_card,
-                value: card_values[currentValue],
-            }];
+                value,
+            };
             currentValue++;
             used_cards[i] = true;
             used_cards[second_card] = true;
@@ -42,10 +36,10 @@
         return counter === boardSize;
     }
     function cardExists(id) {
-        return (used_cards[id] === true);
+        return (used_cards[id]);
     }
     function getRandomCard(duplicate) {
-        let newCard = Math.floor(Math.random() * (boardSize - 0 + 1)) + 0;
+        let newCard = Math.floor(Math.random() * ((boardSize - 1) - 0 + 1)) + 0;
 
         if (duplicate === newCard || cardExists(newCard)) return getRandomCard(duplicate);
         return newCard;
@@ -53,8 +47,9 @@
     function selectCard(e) {
         console.log(e.detail.ID);
     }
-    console.log(used_cards);
-    console.log(pairs);
+    console.log({cards});
+    // console.log(used_cards);
+    // console.log(pairs);
 </script>
 
 <style>
