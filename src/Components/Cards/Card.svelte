@@ -4,12 +4,13 @@
 
     export let Value;
     export let ID;
-
+    export let canFlip;
+    export let flipped = false;
     
-    let flipped = false;
 
     function select() {
-        flipped = !flipped;
+        if (canFlip)
+            flipped = true;
         dispatch('selectCard', { ID });
     }
 </script>
@@ -22,6 +23,7 @@
         perspective: 600px;
     }
     .card {
+        cursor: pointer;
         text-align: center;
         font-size: 3rem;
         color: #333;
@@ -51,7 +53,7 @@
 </style>
 <div class='container'>
     <div class='card' class:is-flipped={flipped} on:click={() => select()}>
-        <div class="card_face card_face-front">?</div>
+        <div class="card_face card_face-front">{ID}</div>
         <div class="card_face card_face-back">{flipped ? Value : ''}</div>
     </div>
 </div>

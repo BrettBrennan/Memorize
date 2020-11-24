@@ -3,30 +3,41 @@
     import Card from '../Cards/Card.svelte';
 
     let card_values = [ 'X', '#', '@', '$', '%', '&', 'O', '=', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ];
-    let currentValue = 0;
-
-    let cards = new Array(boardSize).fill({});
-    let used_cards = new Array(boardSize).fill(false);
-    // console.log(used_cards);
-    console.log(`Board Size: ${boardSize}`);
-    console.log(`Cards Length: ${cards.length}`);
-    console.log(`Used Card Length: ${used_cards.length}`);
-    for (let i = 0; i < boardSize / 2; i++) {
-        if (!cardExists(i)){
-            let value =card_values[currentValue]; 
-            let second_card = getRandomCard(i);
-            cards[i] = {
-                id: i,
-                value,                
+    let currentValue;
+    let cards;
+    let used_cards;
+    let first;
+    let second;
+    
+    async function generateCards() {
+        currentValue = 0;
+        first = -1;
+        second = -1;
+        cards = new Array(boardSize).fill({});
+        used_cards = new Array(boardSize).fill(false);
+        for (let i = 0; i < boardSize; i++) {
+            if (!cardExists(i)){
+                let value =card_values[currentValue]; 
+                let second_card = await getRandomCard(i);
+                // console.log(`first card ${i}, second card ${second_card}`);
+                cards[i] = {
+                    id: i,
+                    value,      
+                    flippable: true,
+                    flipped: false,          
+                }
+                cards[second_card] = {
+                    id: second_card,
+                    value,
+                    flippable: true,          
+                    flipped: false,          
+                };
+                currentValue++;
+                used_cards[i] = true;
+                used_cards[second_card] = true;
             }
-            cards[second_card] = {
-                id: second_card,
-                value,
-            };
-            currentValue++;
-            used_cards[i] = true;
-            used_cards[second_card] = true;
         }
+        //console.log(cards, used_cards);
     }
     function boardFilled () {
         let counter = 0;
@@ -38,30 +49,66 @@
     function cardExists(id) {
         return (used_cards[id]);
     }
-    function getRandomCard(duplicate) {
-        let newCard = Math.floor(Math.random() * ((boardSize - 1) - 0 + 1)) + 0;
+    async function getRandomCard(duplicate) {
+        let newCard = Math.floor(Math.random() * ((boardSize - 1) - 0 + 1));
 
-        if (duplicate === newCard || cardExists(newCard)) return getRandomCard(duplicate);
+        if (duplicate === newCard || cardExists(newCard))
+            newCard = await getRandomCard(duplicate);
+        
         return newCard;
     }
-    function selectCard(e) {
-        console.log(e.detail.ID);
+    function matchCheck() {
+        if (first === -1 || second === -1) return;
+
+        setTimeout(() => {
+            if (cards[first].value === cards[second].value){ // They Match!
+                cards[first].flipped = true;
+                cards[first].flippable = false;
+                cards[second].flipped = true;
+                cards[second].flippable = false;
+            }else{ // They do not match
+                cards[first].flipped = false;
+                cards[second].flipped = false;
+            }
+            first = -1;
+            second = -1;    
+        }, 2000);
     }
-    console.log({cards});
-    // console.log(used_cards);
-    // console.log(pairs);
+    function selectCard(e) {
+        const cID = e.detail.ID;
+        console.log(`Selecting card ${cID}`);
+        if (cards[cID].flipped) return;
+
+        if (cards[cID].flippable){
+            if (first === -1){
+                first = cID;
+                cards[cID].flipped = true;
+                return;
+            }
+
+            if (second === -1) {
+                second = cID;
+                cards[cID].flipped = true;
+                matchCheck();
+                return;
+            }
+            
+        }
+    }
+
+    generateCards();
 </script>
 
 <style>
     .board { 
         padding: 100px;
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
     }
 </style>
+<button on:click={() => generateCards()}>Regen</button>
 <div class='board'> 
     {#each cards as card}
-        <Card Value={card.value} ID={card.id} on:selectCard={selectCard} />
+        <Card Value={card.value} ID={card.id} canFlip={card.flippable} flipped={card.flipped} on:selectCard={selectCard} />
     {/each}
 </div>
