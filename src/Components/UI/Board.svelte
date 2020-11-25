@@ -1,7 +1,12 @@
 <script>
-    export let boardSize;
     import Card from '../Cards/Card.svelte';
     import { createEventDispatcher } from 'svelte';
+
+    export let boardSize;
+    export const restartGame = () => {
+        generateCards();
+    }; 
+
     const dispatch = createEventDispatcher();
 
     let card_values = [ 'X', '#', '@', '$', '%', '&', 'O', '=', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ];
@@ -13,7 +18,11 @@
     let canFlipCards = true;
     let tries = 3;
     let score = 0;
+    let won = false;
+    let BOARD_STATE = 'PLAYING';
     async function generateCards() {
+        BOARD_STATE = 'PLAYING';
+        won = false;
         score = 0;
         tries = 3;
         currentValue = 0;
@@ -25,7 +34,6 @@
             if (!cardExists(i)){
                 let value =card_values[currentValue]; 
                 let second_card = await getRandomCard(i);
-                // console.log(`first card ${i}, second card ${second_card}`);
                 cards[i] = {
                     id: i,
                     value,      
@@ -43,14 +51,6 @@
                 used_cards[second_card] = true;
             }
         }
-        //console.log(cards, used_cards);
-    }
-    function boardFilled () {
-        let counter = 0;
-        for (let i = 0; i < used_cards.length; i++)
-            if (used_cards[i]) counter++;
-        
-        return counter === boardSize;
     }
     function cardExists(id) {
         return (used_cards[id]);
@@ -63,6 +63,20 @@
         
         return newCard;
     }
+    function boardCheck() {
+        let nonFlipped = 0;
+        for (let card in cards) {
+            if (!cards[card].flipped) nonFlipped += 1;
+        }
+
+        if (nonFlipped === 0) {
+            // User has won!
+            won = true;
+            BOARD_STATE = 'GAME_OVER';
+        }else{
+            // Continue Game.
+        }
+    }
     function matchCheck() {
         if (first === -1 || second === -1) return;
         setTimeout(() => {
@@ -72,6 +86,7 @@
                 cards[second].flipped = true;
                 cards[second].flippable = false;
                 score += 50;
+                boardCheck();
             }else{ // They do not match
                 cards[first].flipped = false;
                 cards[second].flipped = false;
@@ -83,9 +98,10 @@
 
 
             if (tries <= 0) {
-                dispatch('gameOver', { won: false, score });
+                won = false;
+                BOARD_STATE = 'GAME_OVER';
             }
-        }, 2000);
+        }, 1000);
     }
     function selectCard(e) {
         const cID = e.detail.ID;
@@ -120,9 +136,18 @@
         grid-template-columns: repeat(4, 1fr);
     }
 </style>
-<button on:click={() => generateCards()}>Regen</button>
+{#if BOARD_STATE === 'PLAYING'}
+<h2>Score: {score} Tries Left: {tries} </h2>
 <div class='board'> 
     {#each cards as card}
         <Card Value={card.value} ID={card.id} canFlip={canFlipCards ? card.flippable : false} flipped={card.flipped} on:selectCard={selectCard} />
     {/each}
 </div>
+{:else if BOARD_STATE === 'GAME_OVER'}
+    {#if won === true}
+        <h2>Congratulations! You won! Final Score: {score}</h2>
+    {:else}
+        <h2>Oh no! You lost! Final Score: {score}</h2>
+    {/if}
+    <button on:click={() => generateCards()}>Play Again?</button>
+{/if}

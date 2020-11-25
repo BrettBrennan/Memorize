@@ -4,6 +4,7 @@
     const dispatch = createEventDispatcher();
 
     export let STATE;
+
     let boardSize = 6;
     let GAME_PLAYING = false;
     let won = false;
@@ -33,12 +34,6 @@
             <button on:click={() => startGame(12)}>12</button>
             <button on:click={() => startGame(18)}>18</button>
             <button on:click={() => startGame(24)}>24</button>
-        {/if}
-    {:else if STATE === 'GAME_OVER'}
-        {#if won}
-            <h2>You Won! Your final score was {finalScore}</h2>
-        {:else}
-            <h2>You Lost! Your final score was {finalScore}</h2>
         {/if}
     {:else}
         TODO: Add state here.
