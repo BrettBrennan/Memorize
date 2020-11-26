@@ -11,6 +11,12 @@
 	main {
 		text-align: center;
 	}
+	h1 {
+		
+		color: #96eca1;
+		font-size: 4rem;	
+		padding: 50px;
+	}
 </style>
 
 <main>

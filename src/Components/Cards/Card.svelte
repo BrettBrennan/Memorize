@@ -16,11 +16,10 @@
 </script>
 <style>
     .container {
-        width: 200px;
-        height: 260px;
-        border: 1px solid #CCC;
-        margin: 40px 0;
-        perspective: 600px;
+        width: 150px;
+        height: 150px;
+        margin: 20px 0;
+        perspective: 300px;
     }
     .card {
         cursor: pointer;
@@ -38,13 +37,16 @@
         height: 100%;
         width: 100%;
         backface-visibility: hidden;
+        line-height: 150px;
     }
     .card_face-front {
-        background: rgb(104, 56, 24);
+		background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
     }
 
     .card_face-back {
-        background: rgb(199, 247, 255);
+        text-align: center;
+        color: white;
+        background-image: linear-gradient(to top, #4facfe 0%, #00f2fe 100%);
         transform: rotateY( 180deg );
     }
     .card.is-flipped {
@@ -53,7 +55,7 @@
 </style>
 <div class='container'>
     <div class='card' class:is-flipped={flipped} on:click={() => select()}>
-        <div class="card_face card_face-front">{ID}</div>
+        <div class="card_face card_face-front">?</div>
         <div class="card_face card_face-back">{flipped ? Value : ''}</div>
     </div>
 </div>

@@ -1,15 +1,10 @@
 <script>
     import Card from '../Cards/Card.svelte';
-    import { createEventDispatcher } from 'svelte';
-
     export let boardSize;
     export const restartGame = () => {
         generateCards();
     }; 
-
-    const dispatch = createEventDispatcher();
-
-    let card_values = [ 'X', '#', '@', '$', '%', '&', 'O', '=', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H' ];
+    let card_values = [ 'X', '#', '@', '$', '%', '&', '=', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'Y', 'Z'];
     let currentValue;
     let cards;
     let used_cards;
@@ -131,9 +126,13 @@
 
 <style>
     .board { 
-        padding: 100px;
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(6, 1fr);
+        justify-items: center;
+    }
+    h2 {
+        color: #e5e5e5;
+
     }
 </style>
 {#if BOARD_STATE === 'PLAYING'}
