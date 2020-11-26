@@ -11,7 +11,7 @@
     let first;
     let second;
     let canFlipCards = true;
-    let tries = 3;
+    let tries = 4;
     let score = 0;
     let won = false;
     let BOARD_STATE = 'PLAYING';
@@ -19,7 +19,13 @@
         BOARD_STATE = 'PLAYING';
         won = false;
         score = 0;
-        tries = 3;
+        tries = 4;
+        if (boardSize === 20)
+            tries = 5;
+        if (boardSize === 36)
+            tries = 6;
+        if (boardSize === 48)
+            tries = 7;
         currentValue = 0;
         first = -1;
         second = -1;
