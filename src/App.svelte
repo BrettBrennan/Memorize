@@ -2,6 +2,7 @@
 	import { GAME_STATE } from './stores';
 	import Game from './Components/UI/Game.svelte';
 	import Menu from './Components/UI/Menu.svelte';
+	import Footer from './Components/UI/Footer.svelte';
 	function changeState(e) {
 		GAME_STATE.set(e.detail.state);
 	}
@@ -10,9 +11,9 @@
 <style>
 	main {
 		text-align: center;
+		min-height: 94vh;
 	}
 	h1 {
-		
 		color: #96eca1;
 		font-size: 4rem;	
 		padding: 50px;
@@ -28,3 +29,4 @@
 	{/if}
 </main>
 
+<Footer />
