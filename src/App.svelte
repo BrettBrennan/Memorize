@@ -26,5 +26,5 @@
 	{:else}
 		<Game on:changeState={changeState} STATE={$GAME_STATE} />
 	{/if}
-
 </main>
+

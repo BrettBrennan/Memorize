@@ -127,12 +127,22 @@
 <style>
     .board { 
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
         justify-items: center;
     }
     h2 {
         color: #e5e5e5;
 
+    }
+    button {
+        margin: 50px;
+        width: 300px;
+        border: 0;
+		background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+        padding: 5px;
+        color: #222;
+        font-size: 2rem;
+        cursor: pointer;
     }
 </style>
 {#if BOARD_STATE === 'PLAYING'}
