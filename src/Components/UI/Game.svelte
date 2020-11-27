@@ -1,4 +1,5 @@
 <script>
+    import { fade } from 'svelte/transition';
     import Board from './Board.svelte';
     import { createEventDispatcher } from 'svelte';
     const dispatch = createEventDispatcher();
@@ -43,7 +44,7 @@
         cursor: pointer;       
     }
 </style>
-<div>
+<div transition:fade>
     {#if STATE === 'GAME_PLAY'}
         {#if GAME_PLAYING}
             <Board {boardSize} on:gameOver={gameOver} />
@@ -58,7 +59,5 @@
                 <li><button on:click={() => startGame(48)}>48 Cards</button></li>
             </ul>
         {/if}
-    {:else}
-        TODO: Add state here.
     {/if}
 </div>

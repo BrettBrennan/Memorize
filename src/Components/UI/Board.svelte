@@ -1,4 +1,6 @@
 <script>
+    import { fade } from 'svelte/transition';
+
     import Card from '../Cards/Card.svelte';
     export let boardSize;
     export const restartGame = () => {
@@ -151,18 +153,20 @@
         cursor: pointer;
     }
 </style>
-{#if BOARD_STATE === 'PLAYING'}
-<h2>Score: {score} Tries Left: {tries} </h2>
-<div class='board'> 
-    {#each cards as card}
-        <Card Value={card.value} ID={card.id} canFlip={canFlipCards ? card.flippable : false} flipped={card.flipped} on:selectCard={selectCard} />
-    {/each}
-</div>
-{:else if BOARD_STATE === 'GAME_OVER'}
-    {#if won === true}
-        <h2>Congratulations! You won! Final Score: {score}</h2>
-    {:else}
-        <h2>Oh no! You lost! Final Score: {score}</h2>
+<div transition:fade>
+    {#if BOARD_STATE === 'PLAYING'}
+    <h2>Score: {score} Tries Left: {tries} </h2>
+    <div class='board'> 
+        {#each cards as card}
+            <Card Value={card.value} ID={card.id} canFlip={canFlipCards ? card.flippable : false} flipped={card.flipped} on:selectCard={selectCard} />
+        {/each}
+    </div>
+    {:else if BOARD_STATE === 'GAME_OVER'}
+        {#if won === true}
+            <h2>Congratulations! You won! Final Score: {score}</h2>
+        {:else}
+            <h2>Oh no! You lost! Final Score: {score}</h2>
+        {/if}
+        <button on:click={() => generateCards()}>Play Again?</button>
     {/if}
-    <button on:click={() => generateCards()}>Play Again?</button>
-{/if}
+</div>

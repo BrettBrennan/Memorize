@@ -1,4 +1,5 @@
 <script>
+	
 	import { GAME_STATE } from './stores';
 	import Game from './Components/UI/Game.svelte';
 	import Menu from './Components/UI/Menu.svelte';
