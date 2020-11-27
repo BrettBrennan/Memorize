@@ -39,7 +39,7 @@
         You play this game by flipping cards over.<br />
         If the card values match they will stay flipped and your score will increase.<br />
         If they do not match the card will flip back over and you will lose a try.<br />
-        After 3 tries you lose the game.<br />
+        After several tries you lose the game.<br />
         If you manage to flip all cards successfully you win!
     </h3>
     <button on:click={() => changeState('GAME_PLAY')}>Play Game</button>

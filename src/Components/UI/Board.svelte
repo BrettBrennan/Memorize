@@ -158,7 +158,7 @@
     <h2>Score: {score} Tries Left: {tries} </h2>
     <div class='board'> 
         {#each cards as card}
-            <Card Value={card.value} ID={card.id} canFlip={canFlipCards ? card.flippable : false} flipped={card.flipped} on:selectCard={selectCard} />
+            <Card Value={card.value} ID={card.id} matched={!card.flippable && card.flipped} canFlip={canFlipCards ? card.flippable : false} flipped={card.flipped} on:selectCard={selectCard} />
         {/each}
     </div>
     {:else if BOARD_STATE === 'GAME_OVER'}

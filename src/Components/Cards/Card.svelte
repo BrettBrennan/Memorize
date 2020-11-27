@@ -6,8 +6,7 @@
     export let ID;
     export let canFlip;
     export let flipped = false;
-    
-
+    export let matched = false;
     function select() {
         if (canFlip)
             flipped = true;
@@ -29,8 +28,12 @@
         width: 100%;
         height: 100%;
         position: relative;
-        transition: transform 0.7s;
+        transition: transform 0.7s, border-color 0.5s ease;
         transform-style: preserve-3d;
+        border: 4px solid transparent;
+    }
+    .card:hover {
+        border: 4px solid rgb(109, 141, 247);
     }
     .card_face {
         position: absolute;
@@ -52,9 +55,14 @@
     .card.is-flipped {
         transform: rotateY(180deg);
     }
+    .matched {
+        border: 4px solid rgb(255, 104, 141) !important;
+        cursor: not-allowed;
+        transition: border-color 0.5s ease;
+    }
 </style>
 <div class='container'>
-    <div class='card' class:is-flipped={flipped} on:click={() => select()}>
+    <div class='card' class:is-flipped={flipped} class:matched={matched} on:click={() => select()}>
         <div class="card_face card_face-front">?</div>
         <div class="card_face card_face-back">{flipped ? Value : ''}</div>
     </div>
